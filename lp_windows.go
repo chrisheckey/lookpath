@@ -7,6 +7,7 @@ package lookpath
 import (
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
@@ -77,7 +78,7 @@ func LookPath(path, file string) (string, error) {
 		if f, err := findExecutable(file, exts); err == nil {
 			return f, nil
 		} else {
-			return "", &Error{file, err}
+			return "", &exec.Error{file, err}
 		}
 	}
 	if f, err := findExecutable(filepath.Join(".", file), exts); err == nil {
@@ -88,5 +89,5 @@ func LookPath(path, file string) (string, error) {
 			return f, nil
 		}
 	}
-	return "", &Error{file, ErrNotFound}
+	return "", &exec.Error{file, ErrNotFound}
 }
